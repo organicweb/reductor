@@ -1,0 +1,150 @@
+html
+{
+	background:url('/img/background.jpg') repeat;
+	border-bottom:#675f55 3px solid;
+	border-top:#675f55 3px solid;
+	height:100%;	
+	position:relative;
+}
+body
+{
+	margin:0 auto;
+	width:960px;
+	background: transparent url('/img/halo.png') no-repeat top center;
+}
+#header
+{
+	padding-top: 43px;
+}
+.logo
+{
+	background:url('/img/logo.png') no-repeat;
+	width:364px; height:140px;
+	margin: 0 auto;
+}
+.logo a
+{
+	text-indent: -9999px;
+	width: 364px;
+	height:140px;
+	display: block;
+}
+#box
+{
+	width:386px;height:150px;
+	background: transparent url('/img/shadow-top-box.png') no-repeat top center;
+	padding-top: 30px;
+	margin:0 auto;
+}
+label
+{
+	display:none;
+}
+form
+{
+	position: relative;
+	background-color:#9d9386;
+	width:100%;
+	height:170px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+}
+input
+{
+	position:absolute;
+	display:block;
+	font-size:14px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px; 
+	border:0px solid;
+}
+input[type=text]
+{
+	margin-top:51px;
+	margin-left:45px;
+	width:290px;
+	height:32px;
+	color:#a19b93;
+	padding-left:14px;
+}
+input[type=submit]
+{
+	margin-top:126px;
+	margin-left:262px;
+	width:86px;
+	height:27px;
+	background-image:-moz-linear-gradient(#9a948a, #5d5144);
+	background-image:-webkit-gradient(linear, from(#9a948a), to(#5d5144));	
+	background-color:#9a948a;
+	color:#FFFFFF;
+	cursor:pointer;
+}
+input[type=submit]:hover
+{
+	background-image:-moz-linear-gradient(#5d5144, #9a948a);
+	background-image:-webkit-gradient(linear, from(#5d5144), to(#9a948a));	
+	background-color:#9a948a;
+}
+#shadow-input
+{
+	position:absolute;
+	margin-top:86px;
+	margin-left:58px;
+}
+#shadow-submit
+{
+	position:absolute;
+	margin-left:255px;
+	margin-top:153px;
+}
+#shortUrl
+{
+	margin-top:0px;
+	text-align:center;
+	font-family: Trebuchet MS;
+}
+#text p
+{
+	position:relative;
+	margin:0;
+	font-family: Trebuchet MS;
+	font-size:35px;
+	font-weight:bold;
+	color:#FFFFFF;
+	margin-top:20px;
+	height:50px;
+	text-align:center;
+	padding-top: 54px;
+	text-shadow: 1px 1px 0 #a19680;
+	
+}
+#text p a
+{
+	padding:0;
+}
+#text
+{
+	background: transparent url('/img/shadow-bottom-box.png') no-repeat top center;	
+}
+#footer
+{
+	position:absolute;
+	bottom:10px;
+	width:960px;
+}
+#footer p
+{
+	text-align:center;
+	font-family: Trebuchet MS;
+	color:#a59c8e;
+	font-size:10px;
+	margin:0 auto;
+}
+#footer img
+{
+	margin:0;
+	position:absolute;
+	right:238px;
+	bottom:0px
