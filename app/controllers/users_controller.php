@@ -5,7 +5,7 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allowedActions = array('group_id');
+		$this->Auth->allowedActions = array('group_id', 'add');
 	}
 	
 	function group_id($id = null)
@@ -25,10 +25,36 @@ class UsersController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid user', true));
+			$this->Session->setFlash(__('Utilisateur inconnu', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('user', $this->User->read(null, $id));
+	}
+
+	function userToAdmin($user_id)
+	{
+		//debug($user_id);
+		
+		//Retourne le group_id de l'utilisateur sélectionné
+		$group_id = $this->User->find('all', array(
+			'fields'=>'group_id',
+			'conditions'=>array('User.id'=>$user_id)
+			));
+					
+		if($group_id[0]['User']['group_id'] == 1)
+		{
+			$group_id[0]['User']['group_id'] = 2;
+			$this->User->save($group_id[0]);
+			//debug($group_id[0]['User']['group_id']);		
+		}
+		elseif($group_id[0]['User']['group_id'] == 2)
+		{
+			$group_id[0]['User']['group_id'] = 1;
+			$this->User->save($group_id[0]);
+			//echo "elseif ";
+			//debug($group_id[0]['User']['group_id']);		
+		}
+		$this->redirect(array('action' => 'index'));
 	}
 
 	function add() 
@@ -41,15 +67,15 @@ class UsersController extends AppController {
 			//fixation du type de groupe (user)
 			$this->data['User']['group_id'] = 2;
 			
+			$created = date('Y-m-d H:i:s');
+			$username = $this->data['User']['username'];
+			$this->data['User']['token'] = $this->Auth->password($username.$created);	
+			
 			//Si la sauvegarde est ok afficher le message correspondant
 			if ($this->User->save($this->data)) 
 			{
-				$this->Session->setFlash(__('The user has been saved', true));
-				$this->redirect(array('action' => 'index'));
-			} 
-			else 
-			{
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('L\'utilisateur à été enregistré', true));
+				$this->redirect(array('action' => 'login'));
 			}
 		}
 		$groups = $this->User->Group->find('list');
@@ -107,6 +133,7 @@ class UsersController extends AppController {
 	    $this->Acl->allow($group, 'controllers/Urls/add');
 		$this->Acl->allow($group, 'controllers/Urls/delete');
 		$this->Acl->allow($group, 'controllers/Urls/index');
+		$this->Acl->allow($group, 'controllers/Urls/get_url');		
 		$this->Acl->allow($group, 'controllers/Users/login');
 		$this->Acl->allow($group, 'controllers/Users/logout');
 		
@@ -120,7 +147,7 @@ class UsersController extends AppController {
 		if ($this->Session->read('Auth.User')) 
 		{
 			$this->Session->setFlash('You are logged in!');
-			//$this->redirect('/', null, false);
+			$this->redirect(array('controller'=>'urls', 'action'=>'add'));
 		}
 	}       
 	

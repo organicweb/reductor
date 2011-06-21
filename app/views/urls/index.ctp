@@ -1,15 +1,41 @@
-<div class="urls index">
-	<h2><?php __('Liste des urls réduites');?></h2>
-	<table cellpadding="0" cellspacing="0">
+<div id="header">
+	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
+	<h1>Liste des urls réduites</h1>
+</div>
+<?php 
+if($group_id == 1) :?>
+<ul id="nav">
+	<li>Urls
+		<ul>
+			<li><a href="/urls/add">Ajouter une url</a></li>
+			<li><a href="/urls/index">Lister les urls</a></li>
+		</ul>
+	</li>
+	<li>Utilisateurs
+		<ul>
+			<li><a href="/users/add">Ajouter un utilisateur</a></li>
+			<li><a href="/users/index">Lister les utilisateurs</a></li>
+			<li><a href="/users/logout">Déconnexion</a></li>
+		</ul>
+	</li>
+	<li>Groupes
+		<ul>
+			<li><a href="/groups/index">Lister les groupes</a></li>
+		</ul>
+	</li>
+</ul>
+<?php endif; ?>
+<div id="index_urls">
+	<table>
 	<tr>
-			<th><?php echo ('identifiant');?></th>
-			<th><?php echo ('Url de base');?></th>
-			<th><?php echo ('Url Réduite');?></th>
-			<th><?php echo ('créé le');?></th>
-			<th><?php echo ('modifié le');?></th>
-			<th><?php echo ('adresse Ip');?></th>
-			<th><?php echo ('delete at');?></th>
-			<th class="actions"><?php __('Actions');?></th>
+		<th>Identifiant</th>
+		<th>Url de base</th>
+		<th>Url Réduite</th>
+		<th>créé le :</th>
+		<th>modifié le :</th>
+		<?php if($group_id == 1): ?><th>adresse Ip</th><?php endif; ?>
+		<?php if($group_id == 1): ?><th>Supprimé le :</th><?php endif; ?>
+		<th>Actions</th>
 	</tr>
 	<?php
 	$i = 0;
@@ -25,33 +51,31 @@
 		<td><?php echo $url['Url']['shortUrl']; ?>&nbsp;</td>
 		<td><?php echo $url['Url']['created']; ?>&nbsp;</td>
 		<td><?php echo $url['Url']['modified']; ?>&nbsp;</td>
-		<td><?php echo $url['Url']['adrIp']; ?>&nbsp;</td>
-		<td><?php echo $url['Url']['delete_at']; ?>&nbsp;</td>
+		<?php if($group_id == 1): ?><td><?php echo $url['Url']['adrIp']; ?>&nbsp;</td><?php endif; ?>
+		<?php if($group_id == 1): ?><td><?php echo $url['Url']['delete_at'] == '0000-00-00 00:00:00' ? '' : $url['Url']['delete_at']; ?>&nbsp;</td><?php endif; ?>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $url['Url']['shortUrl'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $url['Url']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $url['Url']['id']), null, sprintf(__('Etes-vous sûr de vouloir supprimer ce lien # %s?', true), $url['Url']['id'])); ?>
+			<?php echo $this->Html->link($this->Html->image("/img/view.png", array("alt"=>"Voir")), array('action' => 'view', $url['Url']['shortUrl']), array('escape' => false)); ?>
+			<?php 
+			if($group_id == 1)
+			{
+				echo $this->Html->link($this->Html->image("/img/edit.png", array("alt"=>"Modifier")), array('action' => 'edit', $url['Url']['id']), array('escape' => false)); 
+			} ?>
+			<?php echo $this->Html->link($this->Html->image("/img/delete.png", array("alt"=>"Supprimer")), array('action' => 'delete', $url['Url']['id']), array('escape' => false), null, $url['Url']['id']); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
 	</table>	
-	<p>
+	<p id="paginator">
 	<?php
 	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+	'format' => __('Page %page% sur %pages%, %current% urls affichées sur un total de %count%', true)
 	));
 	?>	</p>
 
 	<div class="paging">
-		<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
+		<?php echo $this->Paginator->prev('<< ' . __('Précédent', true), array(), null, array('class'=>'disabled'));?>
 	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
+ 	 |	<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
 	</div>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Url', true), array('action' => 'add')); ?></li>
-	</ul>
+	<div id="link"><?php echo $this->Html->link('Réduire une url', array('action'=>'add')); ?></div>
 </div>

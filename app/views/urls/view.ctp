@@ -1,52 +1,62 @@
+<div id="header">
+	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
+	<h1>Détails de l'url</h1>
+</div>
+<?php if($group_id == 1) :?>
+<ul id="nav">
+	<li>Urls
+		<ul>
+			<li><a href="/urls/add">Ajouter une url</a></li>
+			<li><a href="/urls/index">Lister les urls</a></li>
+		</ul>
+	</li>
+	<li>Utilisateurs
+		<ul>
+			<li><a href="/users/add">Ajouter un utilisateur</a></li>
+			<li><a href="/users/index">Lister les utilisateurs</a></li>
+			<li><a href="/users/logout">Déconnexion</a></li>
+		</ul>
+	</li>
+	<li>Groupes
+		<ul>
+			<li><a href="/groups/index">Lister les groupes</a></li>
+		</ul>
+	</li>
+</ul>
+<?php endif; ?>
 <?php 
 if(@$url) 
 {
 	?>
-<div class="urls view">
-<h2><?php  __('Url');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('LongUrl'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $url['Url']['longUrl']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('ShortUrl'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo "http://ow.gs/" .$url['Url']['shortUrl']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $url['Url']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $url['Url']['modified']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Nb de clicks :'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $counter['NbAppel']; ?>
-			&nbsp;
-		</dd>		
-	</dl>
+<div id="view_urls">
+	<table>
+		<tr>
+			<th>Url de départ</th>
+			<th>Url réduite</th>		
+			<th>Crée le :</th>
+			<th>Modifié le :</th>
+			<th>Nombre de clicks pour cette url</th>
+		</tr>
+		<tr>		
+			<td><?php echo $url['Url']['longUrl']; ?>&nbsp;</td>
+			<td><?php echo "http://ow.gs/" .$url['Url']['shortUrl']; ?>&nbsp;</td>
+			<td><?php echo $url['Url']['created']; ?>&nbsp;</td>
+			<td><?php echo $url['Url']['modified']; ?>&nbsp;</td>
+			<td><?php echo $counter['NbAppel']; ?>&nbsp;</td>		
+		</tr>
+	</table>
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+<div id="periodes_urls">
+	<h3>Périodes</h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Url', true), array('action' => 'edit', $url['Url']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Url', true), array('action' => 'delete', $url['Url']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $url['Url']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Urls', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Url', true), array('action' => 'add')); ?> </li>
+		<tr>
+			
+			<li><a id="switcher-day" href="#" class="toggler conteneurDay">Jour</a></li>
+			<li><a id="switcher-week" href="#" class="toggler conteneurWeek">Semaine</a></li>
+			<li><a id="switcher-month" href="#" class="toggler conteneurMonth">Mois</a></li>
+		</tr>
 	</ul>
 </div>
-<h3><?php __('Périodes'); ?></h3>
-<ul>
-	<li><a id="switcher-day" href="#" class="toggler conteneurDay">Jour</a></li>
-	<li><a id="switcher-week" href="#" class="toggler conteneurWeek">Semaine</a></li>
-	<li><a id="switcher-month" href="#" class="toggler conteneurMonth">Mois</a></li>
-</ul>
 <div id='conteneurTypeVisitor'></div>
 <div id='conteneurDay' class="cache"></div>
 <div id='conteneurWeek' class="cache"></div>
@@ -79,11 +89,11 @@ function()
 	            startAngle: -90,
 				padding: 10,
 				sliceMargin: 3,
-				innerDiameter: 0,
+				innerDiameter: 70,
 				shadowOffset: false,
 				highlightMouseOver: true,
 				dataLabels: 'percent',
-				showDataLabels: true
+				showDataLabels: true,
 	         }
 	     },
 		title: 
@@ -99,8 +109,8 @@ function()
 		grid: 
 		{
 	        drawGridLines: true,        // wether to draw lines across the grid or not.
-	        background: 'grey',      	// CSS color spec for background color of grid.
-	        borderColor: '#04FF00',     // CSS color spec for border around grid.
+	        background: '#9D9386',      	// CSS color spec for background color of grid.
+	        borderColor: '#9D9386',     // CSS color spec for border around grid.
 	        borderWidth: 2.0,           // pixel width of border around grid.
 	        shadow: false,               // draw a shadow for grid.
 	        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
@@ -116,12 +126,12 @@ function()
 	{ 
 		title: 
 		{
-	        text: 'Nombre de visiteurs sur un jour',  
+	        text: 'Nombre de visiteurs depuis un jour',  
 	        show: true,
 	    },
 		legend: 
 		{
-        	show: true,
+        	show: false,
         	location: 'se'
     	},
 		axes:
@@ -146,9 +156,9 @@ function()
 	    grid: 
 		{
 	        drawGridLines: true,        // wether to draw lines across the grid or not.
-	        gridLineColor: '#dddddd',   // Color of the grid lines.
-	        background: 'grey',      	// CSS color spec for background color of grid.
-	        borderColor: '#04FF00',     // CSS color spec for border around grid.
+	        gridLineColor: '#5D5144',   // Color of the grid lines.
+	        background: '#9D9386',      	// CSS color spec for background color of grid.
+	        borderColor: '#9D9386',     // CSS color spec for border around grid.
 	        borderWidth: 2.0,           // pixel width of border around grid.
 	        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
 	        rendererOptions: 
@@ -160,7 +170,7 @@ function()
 		series:
 		[
 			{
-				color:'#0085cc',
+				color:'#951f16',
 				markerOptions:
 				{
 					style:'x'
@@ -176,12 +186,12 @@ function()
 	{ 
 		title: 
 		{
-	        text: 'Nombre de visiteurs sur une semaine',  
+	        text: 'Nombre de visiteurs depuis une semaine',  
 	        show: true,
 	    },
 		legend: 
 		{
-        	show: true,
+        	show: false,
         	location: 'se'
     	},	
 		axes:
@@ -206,9 +216,9 @@ function()
 	    grid: 
 		{
 	        drawGridLines: true,        // wether to draw lines across the grid or not.
-	        gridLineColor: '#dddddd',   // Color of the grid lines.
-	        background: 'grey',      	// CSS color spec for background color of grid.
-	        borderColor: '#04FF00',     // CSS color spec for border around grid.
+	        gridLineColor: '#5D5144',   // Color of the grid lines.
+	        background: '#9D9386',      	// CSS color spec for background color of grid.
+	        borderColor: '#9D9386',     // CSS color spec for border around grid.
 	        borderWidth: 2.0,           // pixel width of border around grid.
 	        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
 	        rendererOptions: 
@@ -220,7 +230,7 @@ function()
 		series:
 		[
 			{
-				color:'#0085cc',
+				color:'#951f16',
 				markerOptions:
 				{
 					style:'x'
@@ -241,7 +251,7 @@ function()
 	    },
 		legend: 
 		{
-        	show: true,
+        	show: false,
         	location: 'se'
     	},
 		axes:
@@ -266,10 +276,10 @@ function()
 	    grid: 
 		{
 	        drawGridLines: true,        // wether to draw lines across the grid or not.
-	        gridLineColor: '#dddddd',   // Color of the grid lines.
-	        background: 'grey',      	// CSS color spec for background color of grid.
-	        borderColor: '#04FF00',     // CSS color spec for border around grid.
-	        borderWidth: 2.0,           // pixel width of border around grid.
+	        gridLineColor: '#5D5144',   // Color of the grid lines.
+	        background: '#9D9386',      	// CSS color spec for background color of grid.
+	        borderColor: '#9D9386',     // CSS color spec for border around grid.
+	        borderWidth: 2.0,
 	        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
 	        rendererOptions: 
 			{
@@ -280,7 +290,7 @@ function()
 		series:
 		[
 			{
-				color:'#0085cc', 
+				color:'#951f16', 
 				markerOptions:
 				{
 					style:'x'

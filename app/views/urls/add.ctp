@@ -16,17 +16,24 @@
 	</div>
 	<div id="shortUrl">
 		<?php
-
 			if(isset($this->data['Url']['shortUrl']) && !empty($this->data['Url']['shortUrl']))
 			{				
-				$shortUrl = "http://ow.gs/" .$this->data['Url']['shortUrl'];
+				$shortUrl = "localhost:8888/" .$this->data['Url']['shortUrl'];
 				echo "Votre Url raccourcie est : <a href=" .$shortUrl. " id=\"shortUrl\" >" .$shortUrl. "</a>";
 			}
 		?>
 	</div>
+	<?php if(@$userId != '0'): ?>
+	<div id="link"><?php echo $this->Html->link('Voir mes urls réduites', array('action'=>'index')); ?></div>
+	<?php endif; ?>
 </div>
 <div id="footer">
 	<p>ow.gs est le raccourcisseur d’URL d’Organic Web, agence de création de sites internet à Rennes.</p>
-	<a href="/" alt="bookmarket"><img src="/img/bookmarket.png" alt="Bookmarket" /></a>
+	<?php if(isset($bookmarklet) && $bookmarklet != '')
+	{
+		$token = $this->Session->read('Auth.User.token');
+		echo "<a href=\"javascript:void(location.href='http://localhost:8888/urls/bookmarklet/$token/'+window.btoa(unescape(encodeURIComponent(unescape(location.href)))))\" title=\"Placez le bookmarklet dans vos favoris, pour utiliser ow.gs depuis n'importe quelle page.\" id=\"bookmarklet\"><img src=\"/img/bookmarket.png\" alt=\"Bookmarket\" /></a>";
+	}
+	?>
+	
 </div>
-

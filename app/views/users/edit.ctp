@@ -1,25 +1,33 @@
-<div class="users form">
-<?php echo $this->Form->create('User');?>
-	<fieldset>
-		<legend><?php __('Edit User'); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('username');
-		echo $this->Form->input('password');
-		echo $this->Form->input('group_id');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<div id="header">
+	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
+	<h1>Modifier les informations de l'utilisateur</h1>
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('User.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('User.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Users', true), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Groups', true), array('controller' => 'groups', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Group', true), array('controller' => 'groups', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Urls', true), array('controller' => 'urls', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Url', true), array('controller' => 'urls', 'action' => 'add')); ?> </li>
-	</ul>
+<ul id="nav">
+	<li>Urls
+		<ul>
+			<li><a href="/urls/add">Ajouter une url</a></li>
+			<li><a href="/urls/index">Lister les urls</a></li>
+		</ul>
+	</li>
+	<li>Utilisateurs
+		<ul>
+			<li><a href="/users/add">Ajouter un utilisateur</a></li>
+			<li><a href="/users/index">Lister les utilisateurs</a></li>
+			<li><a href="/users/logout">Déconnexion</a></li>
+		</ul>
+	</li>
+	<li>Groupes
+		<ul>
+			<li><a href="/groups/index">Lister les groupes</a></li>
+		</ul>
+	</li>
+</ul>
+<div id="form_users">
+<?php 
+	echo $this->Form->create('User');
+	echo $this->Form->input('id');
+	echo $this->Form->input('username');
+	echo $this->Form->input('password');
+	echo $this->Form->end(__('Submit', true));
+?>
 </div>

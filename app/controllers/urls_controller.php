@@ -5,10 +5,12 @@ class UrlsController extends AppController
 
 	var $name = 'Urls';
 	var $components = array('RequestHandler');
+	var $paginate = array('limit'=> 5);
 	
-	function beforeFilter() {
+	function beforeFilter() 
+	{
 	    parent::beforeFilter(); 
-	    $this->Auth->allowedActions = array('add', 'index');
+	    $this->Auth->allowedActions = array('add', 'get_url', 'bookmarklet');
 	}
 		
 	function index() 
@@ -26,11 +28,12 @@ class UrlsController extends AppController
 		{
 		    $this->paginate = array(
 		        'conditions' => array('Url.user_id'=>$id, 'delete_at'=>'0000-00-00 00:00:00'),
-		        'limit' => 10
+		        'limit' => 5
 		    );
-		    $urls = $this->paginate('Url');
+			$urls = $this->paginate('Url');
 		    $this->set(compact('urls'));
-		}									
+		}
+		$this->set('group_id', $group_id);									
 	}
 		
 	function get_url($id = null)
@@ -76,10 +79,18 @@ class UrlsController extends AppController
 			//envoi des données à la vue
 			$this->set('url', $this->Url->read(null, $url_id));
 			
-			
 			if(@$shortUrls[0]['Url']['shortUrl'] && !is_null($shortUrls[0]['Url']['shortUrl']))
 			{
-				$this->redirect($this->Url->data['Url']['longUrl']);
+				preg_match('/^[a-zA-Z]+:\/\//', $shortUrls[0]['Url']['longUrl'], $matches);
+	
+				if(@$matches[0] == 'http://')
+				{
+					$this->redirect($shortUrls[0]['Url']['longUrl']);		
+				}
+				else
+				{
+					$this->redirect('http://' .$shortUrls[0]['Url']['longUrl']);
+				}
 			}
 		}	
 		else
@@ -103,6 +114,13 @@ class UrlsController extends AppController
 			'fields'=>array('id'),
 			'conditions'=>array('shortUrl'=>$id)
 			));
+		
+		$group_id = $this->Session->read('Auth.User.group_id');
+		
+		if(isset($group_id) && $group_id != '')
+		{
+			$this->set('group_id', $group_id);
+		}
 		
 		//Si la requête précédente retourne un résultat valide		
 		if(@$url_id[0]['Url']['id'] && !is_null($url_id[0]['Url']['id']))
@@ -310,43 +328,96 @@ class UrlsController extends AppController
 
 	}
 
+	function bookmarklet($token, $url)
+	{			
+		if(isset($token) && $token != '' /*&& isset($url) && $url != ''*/)
+		{
+			$listTokens = $this->User->find('all', array(
+				'fields'=>'token'));
+			
+			debug($listTokens);
+			
+			if($token == $this->Session->read('Auth.User.token'))
+			{
+				$decodedUrl = base64_decode($url);
+				debug($decodedUrl);
+			}
+			//Penser à intégrer le user_id sinon le user n'aura pas accès aux urls qu'il à réduite via le bookmaklet
+		}		
+	}
+
 	function add() 
 	{
+		$bookmarklet = $this->Session->read('Auth.User.id');
+		if(isset($bookmarklet) && $bookmarklet != '')
+		{		
+			$this->set('bookmarklet', $bookmarklet);
+		}
 		if (!empty($this->data)) 
 		{
-			if ($this->RequestHandler->isAjax()) 
+			//ouverture du fichier de blacklistage
+			$handle = fopen(CONFIGS.DS.'blacklist.csv', 'r');
+			
+			//Récupération des valeurs du fichier csv dans un tableau
+			$blacklist = fgetcsv($handle,0,';');
+					
+			//Parcours du tableau de blacklistage
+			for($i=0 ; $i<count($blacklist) ; $i++)
 			{
-				//Le controller est attaqué par le bookMarket
+				//Recherche du dernier id entré
+				$lastDatas = $this->Url->find('first', array(
+					'fields'=>array('id', 'shortUrl'),
+					'order'=>'id DESC'
+					));
+				
+				//Simplification d'écriture				
+				$lastId = $lastDatas['Url']['id'];
+				
+				//Génération de l'identifiant de l'url réduite
+				$val = self::yourls_int2string($lastId);
+				
+				//Si l'identifiant généré est dans la blacklist créer un enregistrement vide
+				if($blacklist[$i] == $val)
+				{
+					$this->Url->create();
+					$this->Url->save($this->data);					
+				}
+			}	
+			
+			//Suppression de tous les enregistrements vides (générés lorsque l'identifiant est blacklisté)
+			$this->Url->deleteAll(array('shortUrl'=>''));
+			
+			//Création d'un espace réservé à l'enregistrement prochain
+			$this->Url->create();
+						
+			//récupération des infos sur l'utilisateur	
+			$this->data['Url']['adrIp'] = $_SERVER['REMOTE_ADDR']; //Son adresse ip
+			$this->data['Url']['user_id'] = $this->Session->read('Auth.User.id'); //Son identifiant d'utilisateur
+			
+			//Simplification d'écriture
+			$userId = $this->data['Url']['user_id'];
+			
+			//Si l'utilisateur n'est pas connecté user_id = 0
+			if($this->data['Url']['user_id']=='')
+			{			
+				$this->data['Url']['user_id'] = '0';
 			}
-			else
-			{		
-				//enregistrement dans la base de l'url de départ
-				$this->Url->create();
-				$this->Url->save($this->data);
-				
-				//lecture de l'id attribué à l'enregistrement
-				$id = $this->Url->getLastInsertID();		
-				$val = self::yourls_int2string($id);
-													
-				//attribution dans le champ shortUrl de la table urls la valeur $val
-				if($val!='')
-				{
-					$this->data['Url']['shortUrl'] = $val;			
-				}
-				
-				//récupération de l'adresse IP de l'utilisateur	
-				$this->data['Url']['adrIp'] = $_SERVER['REMOTE_ADDR'];
-				
-				$this->data['Url']['user_id'] = $this->Session->read('Auth.User.id');	
-				
-				if ($this->Url->save($this->data)) 
-				{				
-					$this->Session->setFlash(__('L\'url à été sauvegardée avec succès !', true));
-				} 
-				else 
-				{
-					$this->Session->setFlash(__('L\'url n\'a pas pu être sauvegardée. Veuillez réessayer.', true));
-				}
+			
+			//envoi de l'id de l'utilisateur à la vue
+			$this->set('userId', $userId);
+			
+			//attribution dans le champ shortUrl de la table urls la valeur $val	
+			if($val != '')
+			{
+				$this->data['Url']['shortUrl'] = $val;			
+			}								
+			if ($this->Url->save($this->data)) 
+			{				
+				$this->Session->setFlash(__('L\'url à été sauvegardée avec succès !', true));
+			} 
+			else 
+			{
+				$this->Session->setFlash(__('L\'url n\'a pas pu être sauvegardée. Veuillez réessayer.', true));
 			}	
 		}
 	}
@@ -404,15 +475,6 @@ class UrlsController extends AppController
 
 		$sNum = is_integer($iNum) ? "$iNum" : (string)$iNum;
 		
-		/*équivalent :  if(is_integer($iNum))
-						{
-							$sNum = $iNum;	
-						}
-						else
-						{
-							$sNum = (string)$iNum;
-						}
-		*/				
 		$iBase = self::yourls_intval($iBase); // incase it is a string or some weird decimal
 
 		// Check to see if we are an integer or real number

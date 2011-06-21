@@ -5,11 +5,13 @@ html
 	border-top:#675f55 3px solid;
 	height:100%;	
 	position:relative;
+	font-family: Trebuchet MS;
 }
 body
 {
 	margin:0 auto;
 	width:960px;
+	height:150px;
 	background: transparent url('/img/halo.png') no-repeat top center;
 }
 #header
@@ -66,7 +68,7 @@ input[type=text]
 	margin-left:45px;
 	width:290px;
 	height:32px;
-	color:#a19b93;
+	color:#A19B93;
 	padding-left:14px;
 }
 input[type=submit]
@@ -78,6 +80,7 @@ input[type=submit]
 	background-image:-moz-linear-gradient(#9a948a, #5d5144);
 	background-image:-webkit-gradient(linear, from(#9a948a), to(#5d5144));	
 	background-color:#9a948a;
+	border:1px solid #5D5144;
 	color:#FFFFFF;
 	cursor:pointer;
 }
@@ -148,3 +151,272 @@ input[type=submit]:hover
 	position:absolute;
 	right:238px;
 	bottom:0px
+}
+
+/*Barre de navigation*/
+#nav
+{
+	color:#5D5144;
+	position:absolute;
+	top:225px;
+	width:960px;
+	height:20px;
+	list-style:none;
+	text-align:center;
+	background:transparent;
+	cursor:pointer;
+	margin:0px;
+	padding-left:0px;
+}
+#nav a
+{
+	text-decoration:none;
+	color:#5D5144;
+}
+#nav li
+{
+	position:relative;
+	float:left;
+	width:320px;
+	background-color:#9D9386;	
+}
+#nav li ul
+{
+	padding:0px;
+}
+#nav li ul li
+{
+	position:relative;
+	float:none;
+	display:none;
+}
+#nav li:hover ul li
+{
+	display:block;
+}
+#nav li ul li a:hover, #nav li ul li:hover
+{
+	background-color:#5D5144;
+	color:#9D9386;
+}
+#edit_groups
+{
+	color:#5D5144;
+	position:relative;
+	width:41%;
+	top:150px;
+	margin:0 auto;
+}
+#edit_groups p
+{
+	position:absolute;
+	left:44px;
+	top:15px;
+}
+#content
+{
+	margin-top:-21px;
+}
+#content h1
+{
+	color:#5D5144;
+}
+#index_groups table
+{
+	
+	position:relative;
+	color:#5D5144;
+	width:960px;
+	margin:0 auto;
+	top:80px;
+	border-collapse:collapse;
+	background-color:#9D9386;
+	-moz-border-radius:10px;
+	text-align:center;
+}
+.altrow
+{
+	background-color:#5D5144;
+	color:#9D9386;
+}
+#view_groups table
+{
+	position:relative;
+	top:70px;
+	width:100%;
+	text-align:center;
+	border-collapse:collapse;
+	background-color:#9D9386;
+	-moz-border-radius:10px;
+	color:#5D5144;
+}
+#view_groups table th, #index_urls table th, #view_users table th
+{
+	border-bottom:1px solid;
+}
+#users_group table, #index_urls table, #view_users table, #view_urls table
+{
+	position:relative;
+	top:70px;
+	width:100%;
+	text-align:center;
+	border-collapse:collapse;
+	background-color:#9D9386;
+	-moz-border-radius:10px;
+	color:#5D5144;	
+}
+#users_group h3
+{
+	position:relative;
+	top:60px;
+	color:#5D5144;
+}
+#form_users
+{
+	color:#5D5144;
+	position:relative;
+	width:41%;
+	top:150px;
+	margin:0 auto;	
+}
+#form_users input[type=password]
+{
+	position:relative;
+	padding-left:14px;
+	height:30px;
+	top:80px;
+	left:44px;
+	width:290px;
+	color:#9D9386;
+}
+#form_users input[type=text]
+{
+	margin-top:30px;
+	margin-left:45px;
+	width:290px;
+	height:32px;
+	color:#A19B93;
+	padding-left:14px;
+}
+#form_users input[type=submit]
+{
+	margin-top:100px;
+	margin-left:262px;
+	width:86px;
+	height:27px;
+	background-image:-moz-linear-gradient(#9a948a, #5d5144);
+	background-image:-webkit-gradient(linear, from(#9a948a), to(#5d5144));	
+	background-color:#9a948a;
+	color:#FFFFFF;
+	cursor:pointer;
+}
+#index_users
+{
+	position:relative;
+	top:70px;
+	text-align:center;
+	color:#5D5144;
+}
+#index_users th a
+{
+	color:#5D5144;
+}
+#index_users a, #index_urls a
+{
+	text-decoration:none;
+}
+#index_users table
+{
+	background-color:#9D9386;
+	border-collapse:collapse;
+	-moz-border-radius:10px;
+}
+.paging
+{
+	text-align:center;
+	position:relative;
+	top:20px;
+}
+#paginator 
+{
+	position:relative;
+	top:75px;
+	text-align:center;
+}
+#list_urls
+{
+	position:relative;
+	top:60px;
+}
+#list_urls table
+{
+	width:100%;
+	background-color:#9D9386;
+	-moz-border-radius:10px;
+	border-collapse:collapse;
+	text-align:center;
+	color:#5D5144;
+}
+#form_urls
+{
+	color:#5D5144;
+	position:relative;
+	width:41%;
+	top:150px;
+	margin:0 auto;	
+}
+#periodes_urls
+{
+	position:absolute;
+	top:440px;
+	left:230px;
+}
+#periodes_urls ul
+{
+	list-style-image: url('../img/stat.png');	
+}
+#periodes_urls ul li a
+{
+	text-decoration:none;
+}
+#conteneurTypeVisitor
+{
+	position:absolute;
+	top:380px;
+	left:350px;
+	width:600px;
+	height:250px;
+}
+#conteneurDay, #conteneurWeek, #conteneurMonth
+{
+	position:absolute;
+	top:620px;
+	width:960px;
+	height:210px;
+}
+#list_urls h3
+{
+	color:#5D5144;
+}
+.error-message
+{
+	position:absolute;
+	top:200px;
+	text-align:center;
+}
+#flashMessage
+{
+	position:absolute;
+	top:594px;
+	left:530px;
+	color:#5D5144;
+}
+#link a
+{
+	color:#951f16;
+	font-weight:bold;
+	position:absolute;
+	top:1px;
+	right:2px;
+	text-decoration:none;
+}

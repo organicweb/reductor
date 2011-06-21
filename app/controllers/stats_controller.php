@@ -28,29 +28,6 @@ class StatsController extends AppController
 		$this->set('counter', $counter);
 	}
 
-	function edit($id = null) 
-	{
-		if (!$id && empty($this->data)) 
-		{
-			$this->Session->setFlash(__('Invalid Stat', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) 
-		{
-			if ($this->Stat->save($this->data)) 
-			{
-				$this->Session->setFlash(__('The stat has been saved', true));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The stat could not be saved. Please, try again.', true));
-			}
-		}
-		if (empty($this->data)) 
-		{
-			$this->data = $this->Stat->read(null, $id);
-		}
-	}
-
 	function delete($id = null) 
 	{
 		if (!$id) 

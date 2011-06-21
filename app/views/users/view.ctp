@@ -1,65 +1,60 @@
-<div class="users view">
-<h2><?php  __('User');?></h2>
-	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Id'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['id']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Username'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['username']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Password'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['password']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Group'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['created']; ?>
-			&nbsp;
-		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
-		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['modified']; ?>
-			&nbsp;
-		</dd>
-	</dl>
+<div id="header">
+	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
+	<h1>Détails de l'utilisateur</h1>
 </div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit User', true), array('action' => 'edit', $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete User', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User', true), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Groups', true), array('controller' => 'groups', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Group', true), array('controller' => 'groups', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Urls', true), array('controller' => 'urls', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Url', true), array('controller' => 'urls', 'action' => 'add')); ?> </li>
-	</ul>
+<ul id="nav">
+	<li>Urls
+		<ul>
+			<li><a href="/urls/add">Ajouter une url</a></li>
+			<li><a href="/urls/index">Lister les urls</a></li>
+		</ul>
+	</li>
+	<li>Utilisateurs
+		<ul>
+			<li><a href="/users/add">Ajouter un utilisateur</a></li>
+			<li><a href="/users/index">Lister les utilisateurs</a></li>
+			<li><a href="/users/logout">Déconnexion</a></li>
+		</ul>
+	</li>
+	<li>Groupes
+		<ul>
+			<li><a href="/groups/index">Lister les groupes</a></li>
+		</ul>
+	</li>
+</ul>
+<div id="view_users">
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Nom d'utilisateur</th>		
+			<th>Mot de passe</th>		
+			<th>Nom du groupe</th>		
+			<th>Crée le :</th>		
+			<th>Modifié le :</th>	
+		</tr>
+		<tr>
+			<td><?php echo $user['User']['id']; ?>&nbsp;</td>
+			<td><?php echo $user['User']['username']; ?>&nbsp;</td>
+			<td><?php echo $user['User']['password']; ?>&nbsp;</td>
+			<td><?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>&nbsp;</td>
+			<td><?php echo $user['User']['created']; ?>&nbsp;</td>
+			<td><?php echo $user['User']['modified']; ?>&nbsp;</td>
+		</tr>
+	</table>
 </div>
-<div class="related">
-	<h3><?php __('Related Urls');?></h3>
+<div id="list_urls">
+	<h3>Liste des urls de l'utilisateur</h3>
 	<?php if (!empty($user['Url'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php __('Id'); ?></th>
-		<th><?php __('LongUrl'); ?></th>
-		<th><?php __('ShortUrl'); ?></th>
-		<th><?php __('Created'); ?></th>
-		<th><?php __('Modified'); ?></th>
-		<th><?php __('AdrIp'); ?></th>
-		<th><?php __('User Id'); ?></th>
-		<th class="actions"><?php __('Actions');?></th>
-	</tr>
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Url de départ</th>
+			<th>Url réduite</th>
+			<th>Créée le :</th>
+			<th>Modifiée le :</th>
+			<th>Adresse ip :</th>
+			<th>Actions</th>
+		</tr>
 	<?php
 		$i = 0;
 		foreach ($user['Url'] as $url):
@@ -75,20 +70,13 @@
 			<td><?php echo $url['created'];?></td>
 			<td><?php echo $url['modified'];?></td>
 			<td><?php echo $url['adrIp'];?></td>
-			<td><?php echo $url['user_id'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View', true), array('controller' => 'urls', 'action' => 'view', $url['id'])); ?>
-				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'urls', 'action' => 'edit', $url['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'urls', 'action' => 'delete', $url['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $url['id'])); ?>
+			<td class="actions">				
+				<?php echo $this->Html->link($this->Html->image("/img/view.png", array("alt"=>"Voir")), array('controller' => 'urls', 'action' => 'view', $url['id']), array('escape' => false)); ?>
+				<?php echo $this->Html->link($this->Html->image("/img/edit.png", array("alt"=>"Modifier")), array('controller' => 'urls', 'action' => 'edit', $url['id']), array('escape' => false)); ?>
+				<?php echo $this->Html->link($this->Html->image("/img/delete.png", array("alt"=>"Supprimer")), array('controller' => 'urls', 'action' => 'delete', $url['id']), array('escape' => false), null, $url['id']); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
 	</table>
 <?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Url', true), array('controller' => 'urls', 'action' => 'add'));?> </li>
-		</ul>
-	</div>
 </div>

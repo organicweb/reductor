@@ -474,7 +474,7 @@ class AuthComponent extends Object {
 			'sessionKey' => 'Auth.' . $model,
 			'logoutRedirect' => $this->loginAction,
 			'loginError' => __('Login failed. Invalid username or password.', true),
-			'authError' => __('You are not authorized to access that location.', true)
+			'authError' => __('Vous n\'êtes pas autorisé à accéder à cette zone', true)
 		);
 		foreach ($defaults as $key => $value) {
 			if (empty($this->{$key})) {

@@ -1,12 +1,35 @@
-<div class="groups index">
-	<h2><?php __('Groups');?></h2>
-	<table cellpadding="0" cellspacing="0">
+<div id="header">
+	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
+	<h1>Liste des groupes</h1>
+</div>
+<ul id="nav">
+	<li>Urls
+		<ul>
+			<li><a href="/urls/add">Ajouter une url</a></li>
+			<li><a href="/urls/index">Lister les urls</a></li>
+		</ul>
+	</li>
+	<li>Utilisateurs
+		<ul>
+			<li><a href="/users/add">Ajouter un utilisateur</a></li>
+			<li><a href="/users/index">Lister les utilisateurs</a></li>
+			<li><a href="/users/logout">Déconnexion</a></li>
+		</ul>
+	</li>
+	<li>Groupes
+		<ul>
+			<li><a href="/groups/index">Lister les groupes</a></li>
+		</ul>
+	</li>
+</ul>
+<div id="index_groups">
+	<table>
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php __('Actions');?></th>
+		<th>id</th>
+		<th>nom du groupe</th>
+		<th>crée le</th>
+		<th>modifié le</th>
+		<th class="actions">Actions</th>
 	</tr>
 	<?php
 	$i = 0;
@@ -22,32 +45,10 @@
 		<td><?php echo $group['Group']['created']; ?>&nbsp;</td>
 		<td><?php echo $group['Group']['modified']; ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $group['Group']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $group['Group']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $group['Group']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $group['Group']['id'])); ?>
+			<?php echo $this->Html->link($this->Html->image("/img/view.png", array("alt"=>"Voir")), array('action' => 'view', $group['Group']['id']), array('escape' => false)); ?>
+			<?php echo $this->Html->link($this->Html->image("/img/edit.png", array("alt"=>"Modifier")), array('action' => 'edit', $group['Group']['id']), array('escape' => false)); ?>
 		</td>
 	</tr>
-<?php endforeach; ?>
+	<?php endforeach; ?>
 	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
-</div>
-<div class="actions">
-	<h3><?php __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Group', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Users', true), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User', true), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
 </div>
