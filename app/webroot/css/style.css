@@ -18,6 +18,11 @@ body
 {
 	padding-top: 43px;
 }
+a 
+{
+	color:#951f16;
+	text-decoration:none;
+}
 .logo
 {
 	background:url('/img/logo.png') no-repeat;

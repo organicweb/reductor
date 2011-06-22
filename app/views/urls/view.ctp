@@ -116,6 +116,7 @@ function()
 	        rendererOptions: {}         // options to pass to the renderer.  Note, the default
 	                                    // CanvasGridRenderer takes no additional options.
 	    },
+		seriesColors: [ "#951f16", "#675f55"]
 	});
 	
 	// initialisation des données

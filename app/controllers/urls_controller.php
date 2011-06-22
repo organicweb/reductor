@@ -33,6 +33,7 @@ class UrlsController extends AppController
 			$urls = $this->paginate('Url');
 		    $this->set(compact('urls'));
 		}
+		
 		$this->set('group_id', $group_id);									
 	}
 		
@@ -367,7 +368,7 @@ class UrlsController extends AppController
 					{
 						$this->data['Url']['shortUrl'] = $val;			
 						$this->Url->save($this->data);
-						$this->redirect(array('action'=>'add'));
+						$this->redirect(array('controller'=>'users', 'action'=>'login'));
 					}
 				}
 			}
@@ -488,14 +489,21 @@ class UrlsController extends AppController
 			$this->Session->setFlash(__('Identifiant d\'url incorrecte', true));
 			$this->redirect(array('action'=>'index'));
 		}	
-				
-		debug($adminOrUser);
-							
-		//intégration de l'heure actuelle dans le champ delete_at de l'url sur laquelle la demande de suppression à été effectuée
-		$this->Url->data['Url']['delete_at'] = date("Y-m-d H:i:s", time());
 		
-		//sauvegarde du changement de valeur de delete_at
-		$this->Url->save($this->data['Url']['delete_at']);
+		$group_id = $this->Session->read('Auth.User.group_id');
+		if($group_id != 1)
+		{							
+			//intégration de l'heure actuelle dans le champ delete_at de l'url sur laquelle la demande de suppression à été effectuée
+			$this->Url->data['Url']['delete_at'] = date("Y-m-d H:i:s", time());
+		
+			//sauvegarde du changement de valeur de delete_at
+			$this->Url->save($this->data['Url']['delete_at']);
+		}
+		else
+		{
+			$this->Url->deleteAll(array('id'=>$id));
+			$this->redirect(array('action'=>'index'));
+		}
 		
 		//affichage du message d'information 'url deleted'	
 		$this->Session->setFlash(__('Url supprimée', true));

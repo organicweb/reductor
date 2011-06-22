@@ -33,7 +33,6 @@ class UsersController extends AppController {
 
 	function userToAdmin($user_id)
 	{
-		//debug($user_id);
 		
 		//Retourne le group_id de l'utilisateur sélectionné
 		$group_id = $this->User->find('all', array(
@@ -44,21 +43,24 @@ class UsersController extends AppController {
 		if($group_id[0]['User']['group_id'] == 1)
 		{
 			$group_id[0]['User']['group_id'] = 2;
-			$this->User->save($group_id[0]);
-			//debug($group_id[0]['User']['group_id']);		
+			$this->User->save($group_id[0]);		
 		}
 		elseif($group_id[0]['User']['group_id'] == 2)
 		{
 			$group_id[0]['User']['group_id'] = 1;
-			$this->User->save($group_id[0]);
-			//echo "elseif ";
-			//debug($group_id[0]['User']['group_id']);		
+			$this->User->save($group_id[0]);	
 		}
 		$this->redirect(array('action' => 'index'));
 	}
 
 	function add() 
 	{
+
+		$group_id = $this->Session->read('Auth.User.group_id');
+		if(isset($group_id))
+		{
+			$this->set('group_id', $group_id);
+		}
 		if (!empty($this->data)) 
 		{
 			//Réservation d'un espace dans la db
@@ -67,6 +69,7 @@ class UsersController extends AppController {
 			//fixation du type de groupe (user)
 			$this->data['User']['group_id'] = 2;
 			
+			//Création du token
 			$created = date('Y-m-d H:i:s');
 			$username = $this->data['User']['username'];
 			$this->data['User']['token'] = $this->Auth->password($username.$created);	
