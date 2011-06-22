@@ -24,9 +24,7 @@
 	</li>
 </ul>
 <?php endif; ?>
-<?php 
-if(@$url) 
-{
+<?php if(@$url) {
 	?>
 <div id="view_urls">
 	<table>
@@ -35,17 +33,18 @@ if(@$url)
 			<th>Url réduite</th>		
 			<th>Crée le :</th>
 			<th>Modifié le :</th>
-			<th>Nombre de clicks pour cette url</th>
+			<th>Nombre de clicks</th>
 		</tr>
 		<tr>		
 			<td><?php echo $url['Url']['longUrl']; ?>&nbsp;</td>
-			<td><?php echo "http://ow.gs/" .$url['Url']['shortUrl']; ?>&nbsp;</td>
+			<td><?php echo $this->Html->link("ow.gs/" .$url['Url']['shortUrl'], 'http://ow.gs/'.$url['Url']['shortUrl']); ?></td>
 			<td><?php echo $url['Url']['created']; ?>&nbsp;</td>
 			<td><?php echo $url['Url']['modified']; ?>&nbsp;</td>
 			<td><?php echo $counter['NbAppel']; ?>&nbsp;</td>		
 		</tr>
 	</table>
 </div>
+<div id="link"><?php echo $this->Html->link('Voir mes urls réduites', array('action'=>'index')); ?></div>
 <div id="periodes_urls">
 	<h3>Périodes</h3>
 	<ul>

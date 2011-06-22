@@ -381,9 +381,9 @@ input[type=submit]:hover
 }
 #conteneurTypeVisitor
 {
-	position:absolute;
-	top:380px;
-	left:350px;
+	position:relative;
+	top:75px;
+	left:290px;
 	width:600px;
 	height:250px;
 }

@@ -4,7 +4,7 @@ class Url extends AppModel
 {
 	var $name = 'Url';
 	var $hasMany = 'Stat';
-		
+	
 	var $validate = array(
 		'longUrl' => array(
 			'notempty' => array(

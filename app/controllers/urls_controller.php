@@ -330,20 +330,85 @@ class UrlsController extends AppController
 
 	function bookmarklet($token, $url)
 	{			
-		if(isset($token) && $token != '' /*&& isset($url) && $url != ''*/)
+		if(isset($token) && $token != '' && isset($url) && $url != '')
 		{
-			$listTokens = $this->User->find('all', array(
-				'fields'=>'token'));
-			
-			debug($listTokens);
-			
-			if($token == $this->Session->read('Auth.User.token'))
+			$listTokens = $this->Url->query("SELECT token 
+											 FROM users ;");
+		    
+			for($i=0 ; $i<count($listTokens) ; $i++)
 			{
-				$decodedUrl = base64_decode($url);
-				debug($decodedUrl);
+				if($listTokens[$i]['users']['token'] == $token)
+				{
+					$this->data['Url']['longUrl'] = base64_decode($url);
+					
+					$val = self::idGenerator();
+
+					//Création d'un espace réservé à l'enregistrement prochain
+					$this->Url->create();
+
+					//récupération des infos sur l'utilisateur	
+					$this->data['Url']['adrIp'] = $_SERVER['REMOTE_ADDR']; //Son adresse ip
+					
+					//recherche de l'id de l'utilisateur depuis son token
+					$userOfThisToken = $this->Url->query("SELECT id 
+													 	  FROM users 
+														  WHERE `token` = '$token';");
+														
+					$this->data['Url']['user_id'] = $userOfThisToken[0]['users']['id']; //Son identifiant d'utilisateur
+				
+					//Simplification d'écriture
+					$userId = $this->data['Url']['user_id'];
+
+					//envoi de l'id de l'utilisateur à la vue
+					$this->set('userId', $userId);
+					
+					//attribution dans le champ shortUrl de la table urls la valeur $val	
+					if($val != '')
+					{
+						$this->data['Url']['shortUrl'] = $val;			
+						$this->Url->save($this->data);
+						$this->redirect(array('action'=>'add'));
+					}
+				}
 			}
-			//Penser à intégrer le user_id sinon le user n'aura pas accès aux urls qu'il à réduite via le bookmaklet
 		}		
+	}
+
+	function idGenerator()
+	{
+		//ouverture du fichier de blacklistage
+		$handle = fopen(CONFIGS.DS.'blacklist.csv', 'r');
+		
+		//Récupération des valeurs du fichier csv dans un tableau
+		$blacklist = fgetcsv($handle,0,';');
+		
+		//Parcours du tableau de blacklistage
+		for($i=0 ; $i<count($blacklist) ; $i++)
+		{
+			//Recherche du dernier id entré
+			$lastDatas = $this->Url->find('first', array(
+				'fields'=>array('id', 'shortUrl'),
+				'order'=>'id DESC'
+				));
+			
+			//Simplification d'écriture				
+			$lastId = $lastDatas['Url']['id'];
+			
+			//Génération de l'identifiant de l'url réduite
+			$val = self::yourls_int2string($lastId);
+			
+			//Si l'identifiant généré est dans la blacklist créer un enregistrement vide
+			if($blacklist[$i] == $val)
+			{
+				$this->Url->create();
+				$this->Url->save($this->data);					
+			}
+		}	
+		
+		//Suppression de tous les enregistrements vides (générés lorsque l'identifiant est blacklisté)
+		$this->Url->deleteAll(array('shortUrl'=>''));
+		
+		return $val;
 	}
 
 	function add() 
@@ -354,38 +419,9 @@ class UrlsController extends AppController
 			$this->set('bookmarklet', $bookmarklet);
 		}
 		if (!empty($this->data)) 
-		{
-			//ouverture du fichier de blacklistage
-			$handle = fopen(CONFIGS.DS.'blacklist.csv', 'r');
+		{			
 			
-			//Récupération des valeurs du fichier csv dans un tableau
-			$blacklist = fgetcsv($handle,0,';');
-					
-			//Parcours du tableau de blacklistage
-			for($i=0 ; $i<count($blacklist) ; $i++)
-			{
-				//Recherche du dernier id entré
-				$lastDatas = $this->Url->find('first', array(
-					'fields'=>array('id', 'shortUrl'),
-					'order'=>'id DESC'
-					));
-				
-				//Simplification d'écriture				
-				$lastId = $lastDatas['Url']['id'];
-				
-				//Génération de l'identifiant de l'url réduite
-				$val = self::yourls_int2string($lastId);
-				
-				//Si l'identifiant généré est dans la blacklist créer un enregistrement vide
-				if($blacklist[$i] == $val)
-				{
-					$this->Url->create();
-					$this->Url->save($this->data);					
-				}
-			}	
-			
-			//Suppression de tous les enregistrements vides (générés lorsque l'identifiant est blacklisté)
-			$this->Url->deleteAll(array('shortUrl'=>''));
+			$val = self::idGenerator();
 			
 			//Création d'un espace réservé à l'enregistrement prochain
 			$this->Url->create();
@@ -398,7 +434,7 @@ class UrlsController extends AppController
 			$userId = $this->data['Url']['user_id'];
 			
 			//Si l'utilisateur n'est pas connecté user_id = 0
-			if($this->data['Url']['user_id']=='')
+			if($userId == '')
 			{			
 				$this->data['Url']['user_id'] = '0';
 			}
@@ -449,9 +485,12 @@ class UrlsController extends AppController
 	{
 		if (!$id) 
 		{
-			$this->Session->setFlash(__('Invalid id for url', true));
+			$this->Session->setFlash(__('Identifiant d\'url incorrecte', true));
 			$this->redirect(array('action'=>'index'));
 		}	
+				
+		debug($adminOrUser);
+							
 		//intégration de l'heure actuelle dans le champ delete_at de l'url sur laquelle la demande de suppression à été effectuée
 		$this->Url->data['Url']['delete_at'] = date("Y-m-d H:i:s", time());
 		
@@ -459,8 +498,8 @@ class UrlsController extends AppController
 		$this->Url->save($this->data['Url']['delete_at']);
 		
 		//affichage du message d'information 'url deleted'	
-		$this->Session->setFlash(__('Url deleted', true));
-		$this->redirect(array('action'=>'index'));
+		$this->Session->setFlash(__('Url supprimée', true));
+		//$this->redirect(array('action'=>'index'));
 		
 	}
 

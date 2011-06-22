@@ -47,7 +47,7 @@ if($group_id == 1) :?>
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $url['Url']['id']; ?>&nbsp;</td>
-		<td><?php echo $url['Url']['longUrl']; ?>&nbsp;</td>
+		<td><?php if(strlen($url['Url']['longUrl']) > 40){ echo substr($url['Url']['longUrl'], 0, 40) ."...";}else{echo $url['Url']['longUrl'];}; ?>&nbsp;</td>
 		<td><?php echo $url['Url']['shortUrl']; ?>&nbsp;</td>
 		<td><?php echo $url['Url']['created']; ?>&nbsp;</td>
 		<td><?php echo $url['Url']['modified']; ?>&nbsp;</td>

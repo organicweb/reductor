@@ -67,7 +67,7 @@
 				<td class="actions">
 					<?php echo $this->Html->link($this->Html->image("/img/view.png", array("alt"=>"Voir")), array('controller' => 'users', 'action' => 'view', $user['id']), array('escape' => false)); ?>
 					<?php echo $this->Html->link($this->Html->image("/img/edit.png", array("alt"=>"Modifier")), array('controller' => 'users', 'action' => 'edit', $user['id']), array('escape' => false)); ?>
-					<?php echo $this->Html->link($this->Html->image("/img/delete.png", array("alt"=>"Supprimer")), array('controller' => 'users', 'action' => 'delete', $user['id']), array('escape' => false), null, $user['id'])); ?>
+					<?php echo $this->Html->link($this->Html->image("/img/delete.png", array("alt"=>"Supprimer")), array('controller' => 'users', 'action' => 'delete', $user['id']), array('escape' => false), null, $user['id']); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
