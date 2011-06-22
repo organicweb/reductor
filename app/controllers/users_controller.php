@@ -5,7 +5,7 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allowedActions = array('group_id', 'add');
+		$this->Auth->allowedActions = array('group_id', 'add', 'lostPassword');
 	}
 	
 	function group_id($id = null)
@@ -55,7 +55,6 @@ class UsersController extends AppController {
 
 	function add() 
 	{
-
 		$group_id = $this->Session->read('Auth.User.group_id');
 		if(isset($group_id))
 		{
@@ -77,12 +76,28 @@ class UsersController extends AppController {
 			//Si la sauvegarde est ok afficher le message correspondant
 			if ($this->User->save($this->data)) 
 			{
+				$mail['token'] = $this->data['User']['token']; 
+				$mail['username'] = $username;
+				$mail['created'] = $created;
 				$this->Session->setFlash(__('L\'utilisateur à été enregistré', true));
-				$this->redirect(array('action' => 'login'));
+				$this->Email->to = $username;
+				$this->Email->subject = 'Confirmation d\'inscription à ow.gs';
+				$this->Email->template = 'simple_message';
+				$this->Email->sendAs = 'html';
+				$this->set('mail', $mail);
+				if($this->Email->send($mail, 'simple_message', 'default'))
+				{
+					$this->redirect(array('action' => 'login'));
+				}
 			}
 		}
 		$groups = $this->User->Group->find('list');
 		$this->set(compact('groups'));
+	}
+
+	function lostPassword($token)
+	{
+
 	}
 
 	function edit($id = null) {
