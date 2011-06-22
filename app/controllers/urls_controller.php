@@ -106,7 +106,7 @@ class UrlsController extends AppController
 		if (!$id) 
 		{
 			//affichage d'un message d'erreur si l'url n'est pas valide
-			$this->Session->setFlash(__('Invalid url', true));
+			$this->Session->setFlash(__('Url non valide', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		
@@ -463,7 +463,7 @@ class UrlsController extends AppController
 	{
 		if (!$id && empty($this->data)) 
 		{
-			$this->Session->setFlash(__('Invalid url', true));
+			$this->Session->setFlash(__('Url invalide', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		//Si une modification a été effectuée sauvegarder les données et afficher un message

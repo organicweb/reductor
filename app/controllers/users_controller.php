@@ -87,15 +87,15 @@ class UsersController extends AppController {
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid user', true));
+			$this->Session->setFlash(__('Utilisateur incorrect', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(__('The user has been saved', true));
+				$this->Session->setFlash(__('L\'utilisateur a été enregistré.', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('L\'utilisateur n\'a pas pu être enregistré. Veuillez réessayer.', true));
 			}
 		}
 		if (empty($this->data)) 
@@ -110,15 +110,15 @@ class UsersController extends AppController {
 	{
 		if (!$id) 
 		{
-			$this->Session->setFlash(__('Invalid id for user', true));
+			$this->Session->setFlash(__('Identifiant invalide pour l\'utilisateur', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->User->delete($id)) 
 		{
-			$this->Session->setFlash(__('User deleted', true));
+			$this->Session->setFlash(__('L\'utilisateur a été supprimé', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('User was not deleted', true));
+		$this->Session->setFlash(__('L\'utilisateur n\'a pas été supprimé', true));
 		$this->redirect(array('action' => 'index'));
 	}
 	
@@ -149,14 +149,14 @@ class UsersController extends AppController {
 	{
 		if ($this->Session->read('Auth.User')) 
 		{
-			$this->Session->setFlash('You are logged in!');
+			$this->Session->setFlash('Vous êtes authentifié !');
 			$this->redirect(array('controller'=>'urls', 'action'=>'add'));
 		}
 	}       
 	
 	function logout()
 	{
-		$this->Session->setFlash('Good-Bye');
+		$this->Session->setFlash('Au revoir');
 		$this->redirect($this->Auth->logout());
 	}
 }
