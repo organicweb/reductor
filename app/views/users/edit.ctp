@@ -2,6 +2,7 @@
 	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
 	<h1>Modifier les informations de l'utilisateur</h1>
 </div>
+<?php if(@$group_id == 1) : ?>
 <ul id="nav">
 	<li>Urls
 		<ul>
@@ -22,6 +23,7 @@
 		</ul>
 	</li>
 </ul>
+<?php endif; ?>
 <div id="form_users">
 <?php 
 	echo $this->Form->create('User');

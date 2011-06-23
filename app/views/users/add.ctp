@@ -2,9 +2,7 @@
 	<h1 class="logo"><a href="/">Organic Web gets shorter</a></h1>
 	<h1>Ajouter un utilisateur</h1>
 </div>
-<?php if(@$group_id == 1) :
-
-?>
+<?php if(@$group_id == 1) : ?>
 <ul id="nav">
 	<li>Urls
 		<ul>

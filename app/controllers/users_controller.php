@@ -5,7 +5,7 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allowedActions = array('group_id', 'add', 'lostPassword');
+		$this->Auth->allowedActions = array('group_id', 'add', 'lostPassword', 'alterPassword');
 	}
 	
 	function group_id($id = null)
@@ -97,9 +97,50 @@ class UsersController extends AppController {
 
 	function lostPassword($token)
 	{
-
+		$listOfTokens = $this->User->find('all', array(
+							'fields'=>array('token', 'username', 'id')
+							));
+		
+		for($i=0, $ok = false ; $i<count($listOfTokens) && $ok == false ; $i++)
+		{
+			if($listOfTokens[$i]['User']['token'] == $token)
+			{
+				$username = $listOfTokens[$i]['User']['username'];
+				$id = $listOfTokens[$i]['User']['id'];
+				$ok = true;
+			}
+		}
+		if($ok)
+		{
+			//Génération du mot de passe temporaire
+			$tmpPassword = substr($token, rand(0, 12), 8);
+			$shaPassword = $this->Auth->password($tmpPassword);
+			$this->User->id = $id;
+			$this->User->save(array('password'=>$shaPassword));
+			
+			//Envoi des variables à la vue
+			$mail['tmpPassword'] = $tmpPassword; 
+			$mail['username'] = $username;
+			$mail['token'] = $token;
+			
+			//Envoi du mail
+			$this->Email->to = $username;
+			$this->Email->subject = 'Oubli de mot de passe sur ow.gs';
+			$this->Email->template = 'lost_password';
+			$this->Email->sendAs = 'html';
+			$this->set('mail', $mail);
+			
+			if($this->Email->send($mail, 'lost_password', 'default'))
+			{
+				$this->redirect(array('action' => 'login'));
+			}
+		}
+		else
+		{
+			$this->redirect(array('action' => 'add'));
+		}
 	}
-
+	
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Utilisateur incorrect', true));
