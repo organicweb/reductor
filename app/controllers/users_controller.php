@@ -83,7 +83,7 @@ class UsersController extends AppController {
 				$this->Email->to = $username;
 				$this->Email->subject = 'Confirmation d\'inscription à ow.gs';
 				$this->Email->template = 'simple_message';
-				$this->Email->sendAs = 'html';
+				$this->Email->sendAs = 'both';
 				$this->set('mail', $mail);
 				if($this->Email->send($mail, 'simple_message', 'default'))
 				{
@@ -127,7 +127,7 @@ class UsersController extends AppController {
 			$this->Email->to = $username;
 			$this->Email->subject = 'Oubli de mot de passe sur ow.gs';
 			$this->Email->template = 'lost_password';
-			$this->Email->sendAs = 'html';
+			$this->Email->sendAs = 'both';
 			$this->set('mail', $mail);
 			
 			if($this->Email->send($mail, 'lost_password', 'default'))
@@ -145,10 +145,22 @@ class UsersController extends AppController {
 	{
 		if(isset($token) && $token != '')
 		{
-			$this->User->save($this->data);
-		}
+			$user_id = $this->User->find('first', array(
+				'fields'=>'id',
+				'conditions'=>array('token'=>$token)
+				));
 		
-		//$this->redirect(array('action' => 'login'));
+			$this->User->id = $user_id['User']['id'];
+			if($this->User->save(array('password'=>$this->data['User']['password'], 'username'=>$this->data['User']['username'])))
+			{
+				$this->Session->setFlash(__('Les modifications ont été enregistrées.', true));
+				$this->redirect(array('action' => 'login'));
+			}
+			else
+			{
+				$this->Session->setFlash(__('Les modifications n\'ont pas été enregistrées. Veuillez réessayer.', true));
+			}
+		}		
 	}
 	
 	function edit($id = null) {
