@@ -26,7 +26,9 @@
 	<?php if(@$userId != '0'): ?>
 	<div id="link"><?php echo $this->Html->link('Voir mes urls réduites', array('action'=>'index')); ?></div>
 	<?php endif; ?>
+	<?php if(@$userId == '0'): ?>
 	<p>Pour accéder à une multitude de fonctionnalités vis-à-vis des urls que vous avez personnellement réduites, créer un compte <?php echo $this->Html->link('ici', array('controller'=>'users', 'action'=>'add')); ?></p>
+	<?php endif; ?>
 </div>
 <div id="footer">
 	<p>ow.gs est le raccourcisseur d’URL d’Organic Web, agence de création de sites internet à Rennes.</p>

@@ -27,7 +27,7 @@
 <div id="form_users">
 <?php 
 	echo $this->Form->create('User');
-	echo $this->Form->input('username', array('placeholder'=>'Entrez ici un nom d\'utilisateur'));
+	echo $this->Form->input('username', array('placeholder'=>'Entrez ici votre adresse mail'));
 	echo $this->Form->input('password', array('placeholder'=>'Entrez ici votre mot de passe'));
  	echo $this->Form->end(__('Submit', true));
 ?>

@@ -141,6 +141,16 @@ class UsersController extends AppController {
 		}
 	}
 	
+	function alterPassword($token)
+	{
+		if(isset($token) && $token != '')
+		{
+			$this->User->save($this->data);
+		}
+		
+		//$this->redirect(array('action' => 'login'));
+	}
+	
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Utilisateur incorrect', true));
@@ -192,7 +202,8 @@ class UsersController extends AppController {
 	    $this->Acl->allow($group, 'controllers/Urls/add');
 		$this->Acl->allow($group, 'controllers/Urls/delete');
 		$this->Acl->allow($group, 'controllers/Urls/index');
-		$this->Acl->allow($group, 'controllers/Urls/get_url');		
+		$this->Acl->allow($group, 'controllers/Urls/get_url');
+		$this->Acl->allow($group, 'controllers/Users/alterPassword');		
 		$this->Acl->allow($group, 'controllers/Users/login');
 		$this->Acl->allow($group, 'controllers/Users/logout');
 		
