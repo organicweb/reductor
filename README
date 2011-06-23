@@ -1,34 +1,50 @@
-CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC. Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
+ENGLISH :
 
-The Cake Software Foundation - promoting development related to CakePHP
-http://cakefoundation.org/
+Pre required :
 
-CakePHP - the rapid development PHP framework
-http://www.cakephp.org
+- a linux server
+- apache 5, mysql 5 installed and operational
 
-Cookbook - user documentation for learning about CakePHP
-http://book.cakephp.org
+Installation guide :
 
-API - quick reference to CakePHP
-http://api.cakephp.org
+Quick install but not very secure :
 
-The Bakery - everything CakePHP
-http://bakery.cakephp.org
+	- Put all the application in the var/www directory
+	- In app/config/database.php configure your own database settings and save changes
+	- In your mysql service create a database with the same name that you set in app/config/database.php
+	- Execute the script findable in app/config/mysql_script.sql in the database you create just before
+	- The default login/password for the administrator is : admin/admin
+	- Go to http://domainName/ just to check if you have any errors, if you have some errors they will be appear in this same page, explications are easy to understand.
+	- If you don't have any errors, go to http://domainName/users/login and log you with default settings
+	- Next, click on link wich is in the top right corner
+	- Next, in the navigation bar choose "lister les utilisateurs".
+	- Now you can see your admin settings, modify them by clicking on the pencil icon
+	- Put your email as username, the choice of the password is free, save changes
+	- You might have receive a confirmation email with a link, DON'T DELETE THIS MESSAGE, it's the only chance you have to recover your account !
+	
+	- That's all the application is operational ! 
+	
+Secure install :
 
-The Show - live and archived podcasts about CakePHP and more
-http://live.cakephp.org
 
-CakePHP Google Group - community mailing list and forum
-http://groups.google.com/group/cake-php
 
-#cakephp on irc.freenode.net - chat with CakePHP developers
-irc://irc.freenode.net/cakephp
+FRANCAIS :
 
-CakeForge - open development for CakePHP
-http://cakeforge.org
+Pre required :
 
-CakePHP gear
-http://www.cafepress.com/cakefoundation
+- un serveur linux
+- apache 5, mysql 5 installé et operationnel
 
-Recommended Reading
-http://astore.amazon.com/cakesoftwaref-20/
+Guide d'installation :
+
+Installation rapide mais peu sécurisée :
+
+	- Mettez toute l'application dans le dossier var/www
+	- Dans le fichier app/config/database.php configurez vos propre paramètres et sauvegardez.
+	- Dans votre service MySQL créez une base de donnée avec le même nom que celui que vous lui avez donné dans le fichier de configuration
+	- Exécutez le script trouvable dans le dossier app/config/mysql_script.sql dans la base de donnée que vous avez crée juste avant
+	- Les paramètres de connexion par défaut pour l'administrateur sont : login: admin /mot de passe: admin
+	- Allez à l'adresse suivante http://NomDeDomaine/ pour vérifier si vous obtenez des erreurs, Si oui ne continuez pas le tutoriel, corrigez ces erreurs avant, les erreurs sont suffisamment explicites pour être corrigées rapidement.
+	- Lorsque vous n'avez plus d'erreurs, allez à l'adresse : http://NomDeDomaine/users/login et entrez les paramètres de connexion par défaut
+	- Ensuite, cliquez sur le lien se trouvant en au à droite
+	- Puis, dans la barre de navigation sélectionnez "lister les utilisateurs"
