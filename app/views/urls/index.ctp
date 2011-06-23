@@ -78,4 +78,5 @@ if($group_id == 1) :?>
  	 |	<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
 	</div>
 	<div id="link"><?php echo $this->Html->link('Réduire une url', array('action'=>'add')); ?></div>
+	<div id="token"><?php echo $this->Html->link('Modifier mes paramètres de connexion', array('controller'=>'users', 'action'=>'alterPassword/' .$token)); ?></div>
 </div>

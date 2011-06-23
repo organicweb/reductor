@@ -143,38 +143,64 @@ class UsersController extends AppController {
 	
 	function alterPassword($token)
 	{
-		if(isset($token) && $token != '')
+		if(!empty($this->data))
 		{
-			$user_id = $this->User->find('first', array(
-				'fields'=>'id',
-				'conditions'=>array('token'=>$token)
-				));
-		
-			$this->User->id = $user_id['User']['id'];
-			if($this->User->save(array('password'=>$this->data['User']['password'], 'username'=>$this->data['User']['username'])))
+			if(isset($token) && $token != '')
 			{
-				$this->Session->setFlash(__('Les modifications ont été enregistrées.', true));
-				$this->redirect(array('action' => 'login'));
-			}
-			else
-			{
-				$this->Session->setFlash(__('Les modifications n\'ont pas été enregistrées. Veuillez réessayer.', true));
+				$datas = $this->User->find('first', array(
+					'fields'=>array('id', 'username', 'modified', 'token'),
+					'conditions'=>array('token'=>$token)
+					));
+						
+				$this->User->id = $datas['User']['id'];
+				
+				if($this->User->save(array('password'=>$this->data['User']['password'], 'username'=>$this->data['User']['username'])))
+				{
+					$this->redirect(array('action' => 'login'));
+				}
+				else
+				{
+					$this->Session->setFlash(__('Les modifications n\'ont pas été enregistrées. Veuillez réessayer.', true));
+				}
 			}
 		}		
 	}
 	
-	function edit($id = null) {
-		if (!$id && empty($this->data)) {
+	function edit($id = null) 
+	{
+		if (!$id && empty($this->data)) 
+		{
 			$this->Session->setFlash(__('Utilisateur incorrect', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
-			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(__('L\'utilisateur a été enregistré.', true));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('L\'utilisateur n\'a pas pu être enregistré. Veuillez réessayer.', true));
-			}
+		if (!empty($this->data)) 
+		{
+			if ($this->User->save($this->data)) 
+			{
+				$datas = $this->User->find('first', array(
+					'fields'=>array('created', 'token'),
+					'conditions'=>array('username'=>$this->data['User']['username'])
+					));
+				
+				debug($datas);
+				
+				//Envoi des variables à la vue
+				$mail['username'] = $this->data['User']['username'];
+				$mail['created'] = $datas['User']['created'];
+				$mail['token'] = $datas['User']['token'];
+				
+				//Envoi du mail
+				$this->Email->to = $this->data['User']['username'];
+				$this->Email->subject = 'Modification des informations de votre compte sur ow.gs';
+				$this->Email->template = 'alter_datas';
+				$this->Email->sendAs = 'both';
+				$this->set('mail', $mail);
+
+				if($this->Email->send($mail, 'alter_datas', 'default'))
+				{
+					$this->Session->setFlash(__('Les modifications ont été enregistrées.', true));
+				}
+			} 
 		}
 		if (empty($this->data)) 
 		{

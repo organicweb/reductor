@@ -425,3 +425,12 @@ input[type=submit]:hover
 	right:2px;
 	text-decoration:none;
 }
+#token a
+{
+	color:#951f16;
+	font-weight:bold;
+	position:absolute;
+	bottom:1px;
+	right:2px;
+	text-decoration:none;	
+}

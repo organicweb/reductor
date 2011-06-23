@@ -34,6 +34,16 @@ class UrlsController extends AppController
 		    $this->set(compact('urls'));
 		}
 		
+		//Récupération du token pour le lien de modification des paramètres de connexion
+		$user_id = $this->Session->read('Auth.User.id');
+		$token = $this->Url->query("SELECT token
+									FROM users
+									WHERE id = $user_id;");
+		
+		$token = $token[0]['users']['token'];
+		
+		//Envoi des données à la vue
+		$this->set('token', $token);		
 		$this->set('group_id', $group_id);									
 	}
 		
