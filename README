@@ -47,4 +47,12 @@ Installation rapide mais peu sécurisée :
 	- Allez à l'adresse suivante http://NomDeDomaine/ pour vérifier si vous obtenez des erreurs, Si oui ne continuez pas le tutoriel, corrigez ces erreurs avant, les erreurs sont suffisamment explicites pour être corrigées rapidement.
 	- Lorsque vous n'avez plus d'erreurs, allez à l'adresse : http://NomDeDomaine/users/login et entrez les paramètres de connexion par défaut
 	- Ensuite, cliquez sur le lien se trouvant en au à droite
-	- Puis, dans la barre de navigation sélectionnez "lister les utilisateurs"
+	- Puis, dans la barre de navigation sélectionnez "lister les utilisateurs".
+	- Maintenant vous pouvez voir les paramètres de votre compte administrateur, modifiez les dès maintenant en cliquant sur l'icône 'crayon'
+	- Mettez votre adresse email comme nom d'utilisateur, en entrez le mot de passe de votre choix, sauvegardez.
+	- Vous devez avoir reçu un email de confirmation avec un lien, NE SUPPRIMER PAS CE MESSAGE, c'est votre seul chance pour récupérer votre compte !
+	
+	- C'est fini l'application est opérationnelle !
+	
+Installation sécurisée :
+
